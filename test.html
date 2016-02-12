@@ -9,18 +9,23 @@
   <button id="btnFib">fib(5)</button>
 </body>
 <script>
-parallelogram(["https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.3.0/lodash.js",
-                "functions.js"],["foo","fib"]).then(function(p){
-  document.getElementById("btn").addEventListener("click",function(){
-      p.foo().then(function(x){
-        console.log(x);
-      });
-  })
-  document.getElementById("btnFib").addEventListener("click",function(){
-      p.fib(5).then(function(x){
-        console.log(x);
-      });
-  })
+var p = parallelogram(["https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.3.0/lodash.js",
+                "functions.js"],["foo","fib"]);
+
+p.foo().then(function(x){
+  console.log("pre:"+x);
+});
+
+document.getElementById("btn").addEventListener("click",function(){
+  p.foo().then(function(x){
+    console.log(x);
+  });
+})
+
+document.getElementById("btnFib").addEventListener("click",function(){
+    p.fib(5).then(function(x){
+      console.log(x);
+    });
 })
 </script>
 </html>
