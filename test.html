@@ -1,0 +1,25 @@
+<html>
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/0.11.0/fetch.js"></script>
+  <script src="https://cdn.jsdelivr.net/es6-promise/3.0.2/es6-promise.min.js"></script>
+  <script src="parallelogram.js"></script>
+</head>
+<body>
+  <button id="btn">foo()</button>
+  <button id="btnFib">fib(5)</button>
+</body>
+<script>
+parallelogram("functions.js","a",["foo","fib"]).then(function(p){
+  document.getElementById("btn").addEventListener("click",function(){
+      p.foo().then(function(x){
+        console.log(x);
+      });
+  })
+  document.getElementById("btnFib").addEventListener("click",function(){
+      p.fib(5).then(function(x){
+        console.log(x);
+      });
+  })
+})
+</script>
+</html>
