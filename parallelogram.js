@@ -4,15 +4,19 @@
 
 (function (window, module) {
   "use strict";
-  window.parallelogram = module.exports = function(url,namespace,fns){
+  window.parallelogram = module.exports = function(url,fns,namespace){
+    if(!namespace){
+      namespace="";
+    }
     var depsAcquired = function(deps){
       var response = deps.join("\n")+
       "var ______namespace = null;\n"+
       "self.addEventListener('message', function(e) {\n"+
-        "if(______namespace === null){\n"+
+        "if(______namespace === null && e.data!=\"\"){\n"+
           "______namespace = self[e.data];\n"+
           "return;\n"+
         "}\n"+
+        "else if(______namespace === null){______namespace =self;return;}"+
         "var fn = e.data[0];\n"+
         "var id = e.data[1];\n"+
         "var args = e.data.splice(2)\n"+
@@ -61,11 +65,17 @@
       return handles;
     }
 
-    return fetch(url)
-    .then(function(response) {
-      return response.text()
-    }).then(function(txt) {
-      return depsAcquired([txt]);
+    if(url.constructor !== Array){
+      url = [url]
+    };
+    var allFilePromises = url.map(function(x){
+      return fetch(x).then(function(response) {
+        return response.text()
+      })
+    })
+    return Promise.all(allFilePromises).then(
+      function(allText) {
+        return depsAcquired(allText);
     })
   }
 })(

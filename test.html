@@ -9,7 +9,8 @@
   <button id="btnFib">fib(5)</button>
 </body>
 <script>
-parallelogram("functions.js","a",["foo","fib"]).then(function(p){
+parallelogram(["https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.3.0/lodash.js",
+                "functions.js"],["foo","fib"]).then(function(p){
   document.getElementById("btn").addEventListener("click",function(){
       p.foo().then(function(x){
         console.log(x);
