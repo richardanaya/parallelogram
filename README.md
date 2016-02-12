@@ -19,5 +19,6 @@ using a simple file full of your functions, created a interface to your function
 
 ```javascript
 var p = parallelogram(["lodash.js","functions.js"],["foo","fib"]);
+
 p.fib(5).then(x=>console.log(x));
 ```
