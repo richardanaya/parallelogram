@@ -1,5 +1,4 @@
 This is a library for creating functional programming distributed across web workers. In particular this library is meant to merge in powerful external libraries into your web workers easily.
-
 ```javascript
 //functions.js
 function foo(){
@@ -14,9 +13,7 @@ function fib(n) {
   }
 }
 ```
-
 using a simple file full of your functions, created a interface to your functions in a web worker
-
 ```javascript
 var p = parallelogram(["lodash.js","functions.js"],["foo","fib"]);
 
