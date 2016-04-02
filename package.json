@@ -1,6 +1,6 @@
 {
   "name": "parallelogram",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A library for asynchronous functional programming",
   "main": "parallelogram.js",
   "scripts": {

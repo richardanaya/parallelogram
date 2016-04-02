@@ -7,10 +7,11 @@
 <body>
   <button id="btn">foo()</button>
   <button id="btnFib">fib(5)</button>
+  <button id="btnTest">test(function(x){...})</button>
 </body>
 <script>
 var p = parallelogram(["https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.3.0/lodash.js",
-                "functions.js"],["foo","fib"]);
+                "functions.js"],["foo","fib","test"]);
 
 p.foo().then(function(x){
   console.log("pre:"+x);
@@ -25,6 +26,14 @@ document.getElementById("btn").addEventListener("click",function(){
 document.getElementById("btnFib").addEventListener("click",function(){
     p.fib(5).then(function(x){
       console.log(x);
+    });
+})
+
+document.getElementById("btnTest").addEventListener("click",function(){
+    p.test(function(x){
+      console.log("callback:"+x);
+    }).then(function(x){
+      console.log("return:"+x);
     });
 })
 </script>

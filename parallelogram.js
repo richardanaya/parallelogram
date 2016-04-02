@@ -38,6 +38,8 @@
     var depsAcquired = function(deps){
       //put together the web worker
       var response = deps.join("\n")+
+      "var RETURN = 0;\n"+
+      "var CALLBACK = 1;\n"+
       "var ______namespace = null;\n"+
       "self.addEventListener('message', function(e) {\n"+
         "if(______namespace === null && e.data!=\"\"){\n"+
@@ -48,7 +50,12 @@
         "var fn = e.data[0];\n"+
         "var id = e.data[1];\n"+
         "var args = e.data.splice(2)\n"+
-        "self.postMessage([id,______namespace[fn].apply(this,args)]);\n"+
+        "args.forEach(function(x,i){\n"+
+        "    if(x._____CALLBACK____){args[i]=function(){\n"+
+        "       self.postMessage([x.id,Array.prototype.slice.call(arguments),CALLBACK]);\n"+
+        "    }\n"+
+        "}});\n"+
+        "self.postMessage([id,[______namespace[fn].apply(this,args)],RETURN]);\n"+
       "}, false);"
 
       // create url for our string webworker
@@ -69,12 +76,27 @@
       var counter = 0;
       var resolvers = {};
 
+
+      var callBackCounter = 0;
+      var callbacks = {};
+
+      function isFunction(functionToCheck) {
+       var getType = {};
+       return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+      }
+
       worker.postMessage(namespace)
       worker.addEventListener('message', function(e) {
         //when we get a result back with an do we have, call its resolver with the value
         var id = e.data[0];
         var result = e.data[1];
-        resolvers[id](result);
+        var type = e.data[2];
+        if(type==0){ //return from function
+          resolvers[id].apply(this,result);
+        }
+        if(type==1){ //callback
+          callbacks[id].apply(this,result);
+        }
       }, false);
 
       //create a handler that can create an id, call the function by id
@@ -82,6 +104,13 @@
       var createHandler = function(fn){
         return function(){
           var args = Array.prototype.slice.call(arguments);
+          args.forEach(function(x,i){
+            if(isFunction(x)){
+              callbacks[callBackCounter] = x;
+              args[i] = {_____CALLBACK____:true,id:callBackCounter}
+              callBackCounter++;
+            }
+          })
           worker.postMessage([fn,counter].concat(args));
           return new Promise(function(resolve){
             resolvers[counter]=resolve;

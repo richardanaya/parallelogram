@@ -9,3 +9,8 @@ function fib(n) {
       return fib(n - 1) + fib(n - 2);
   }
 }
+
+function test(t){
+  t(13);
+  return 123;
+}
