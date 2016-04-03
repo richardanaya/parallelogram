@@ -40,6 +40,7 @@
       var response = deps.join("\n")+
       "var RETURN = 0;\n"+
       "var CALLBACK = 1;\n"+
+      "function isObject(obj){return obj === Object(obj);}\n"+
       "var ______namespace = null;\n"+
       "self.addEventListener('message', function(e) {\n"+
         "if(______namespace === null && e.data!=\"\"){\n"+
@@ -51,7 +52,7 @@
         "var id = e.data[1];\n"+
         "var args = e.data.splice(2)\n"+
         "args.forEach(function(x,i){\n"+
-        "    if(x._____CALLBACK____){args[i]=function(){\n"+
+        "    if(isObject(x)&&x._____CALLBACK____){args[i]=function(){\n"+
         "       self.postMessage([x.id,Array.prototype.slice.call(arguments),CALLBACK]);\n"+
         "    }\n"+
         "}});\n"+

@@ -1,16 +1,28 @@
-function foo(){
-  return _.map([1, 2, 3], function(n) { return n * 3; })
+var freezer = new Freezer({
+  count: 0
+});
+
+// Let's get the frozen data stored
+var model = freezer.get();
+
+// Listen to changes in the state
+freezer.on('update', function( newValue ){
+  model = newValue;
+  newModelHandler(model)
+});
+
+var newModelHandler = null;
+
+function onModel(callback){
+  newModelHandler = callback;
+  newModelHandler(model);
 }
 
-function fib(n) {
-  if(n <= 2) {
-      return 1;
-  } else {
-      return fib(n - 1) + fib(n - 2);
+function doAction(name,data){
+  if(name=="increment"){
+    model.set("count",model.count+1);
   }
-}
-
-function test(t){
-  t(13);
-  return 123;
+  else if(name=="decrement"){
+    model.set("count",model.count-1);
+  }
 }
