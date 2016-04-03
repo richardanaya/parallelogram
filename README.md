@@ -22,8 +22,8 @@ function echo(word,callback) {
 ```
 using a simple file full of your functions, created a interface to your functions in a web worker
 ```javascript
-var p = parallelogram(["lodash.js","functions.js"],["foo","fib"]);
-
+var p = parallelogram(["lodash.js","functions.js"],["foo","fib","echo"]);
+p.foo().then(x=>console.log(x));
 p.fib(5).then(x=>console.log(x));
 p.echo("Hello",x=>console.log(x));
 ```
