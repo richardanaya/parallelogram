@@ -37,7 +37,7 @@
 
     var depsAcquired = function(deps){
       //put together the web worker
-      var response = deps.join(";\n")+
+      var response = deps.join(";\n")+";\n"+
       "var RETURN = 0;\n"+
       "var CALLBACK = 1;\n"+
       "function isObject(obj){return obj === Object(obj);}\n"+
