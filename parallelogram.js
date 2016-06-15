@@ -37,7 +37,7 @@
 
     var depsAcquired = function(deps){
       //put together the web worker
-      var response = deps.join("\n")+
+      var response = deps.join(";\n")+
       "var RETURN = 0;\n"+
       "var CALLBACK = 1;\n"+
       "function isObject(obj){return obj === Object(obj);}\n"+
@@ -150,7 +150,7 @@
     //fetch all the urls
     var allFilePromises = url.map(function(x){
       return fetch(x).then(function(response) {
-        return response.text()+";\n";
+        return response.text();
       })
     })
     //wait til we have everything
