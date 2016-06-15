@@ -150,7 +150,7 @@
     //fetch all the urls
     var allFilePromises = url.map(function(x){
       return fetch(x).then(function(response) {
-        return response.text()
+        return response.text()+";\n";
       })
     })
     //wait til we have everything
